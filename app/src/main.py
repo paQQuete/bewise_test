@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from redis import asyncio as aioredis
 
-from api.v1 import balance
+from api.v1 import questions
 from core.config import SETTINGS
 from core.logger import LOGGING
 from db import redis_inj
@@ -21,7 +21,7 @@ app = FastAPI(
 
 )
 
-app.include_router(balance.router, prefix='/api/v1/balance', tags=['balance'])
+app.include_router(questions.router, prefix='/api/v1/questions', tags=['questions'])
 
 if __name__ == '__main__':
     uvicorn.run(
