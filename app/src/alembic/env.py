@@ -25,7 +25,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.join(current_path, '..')
 sys.path.append(ROOT_PATH)
 
-from db.database import engine, Base
+from db.database import engine_sync, Base
 from models.models import *
 target_metadata = Base.metadata
 
@@ -73,7 +73,7 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine
+    connectable = engine_sync
 
     with connectable.connect() as connection:
         context.configure(
