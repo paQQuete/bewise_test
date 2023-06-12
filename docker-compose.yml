@@ -33,6 +33,7 @@ services:
       - "80:80"
 
 
+
 volumes:
   postgres_data-bewise:
   media_volume-bewise:
