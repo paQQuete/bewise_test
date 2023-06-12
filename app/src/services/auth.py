@@ -11,10 +11,10 @@ async def create_user(user_info: UserCreate, db: AsyncSession) -> UserModel:
     """Create user"""
     db_user = UserModel(**user_info.dict())
     db_user.token = uuid.uuid4()
+    db_user.uuid = uuid.uuid4()
     db.add(db_user)
     await db.flush()
     await db.commit()
-    await db.refresh(db_user)
     return db_user
 
 
