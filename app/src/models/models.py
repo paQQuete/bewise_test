@@ -24,6 +24,8 @@ class HTTPErrorDetails(enum.Enum):
     NOT_ACCEPTABLE = 'This operation is not available for this entity'
     UNPROCESSABLE_ENTITY = 'This entity cannot be processed'
     BAD_REQUEST = 'Invalid data provided'
+    CONFLICT = 'Provided data already exists'
+    UNAUTHORIZED = 'You are not authorized for this request'
 
 
 class Questions(DefaultMixin, Base):
@@ -35,5 +37,26 @@ class Questions(DefaultMixin, Base):
     answer = Column(String(length=255), nullable=False)
     question_created_at = Column(DateTime(timezone=True), nullable=False)
     query_session = Column(Integer, nullable=False, index=True)
+
+
+class Users(DefaultMixin, Base):
+    __tablename__ = 'users'
+    __table_args__ = {'schema': 'content'}
+
+    username = Column(String(length=50), nullable=False, index=True, unique=True)
+    token = Column(UUIDType(binary=False), nullable=False, unique=True)
+
+    audiofile = relationship('AudioFiles', back_populates='user', foreign_keys='AudioFiles.user_uuid')
+
+
+class AudioFiles(DefaultMixin, Base):
+    __tablename__ = 'audiofiles'
+    __table_args__ = {'schema': 'content'}
+
+    wav_file = Column(String(length=255), nullable=True, unique=True)
+    mp3_file = Column(String(length=255), nullable=True, unique=True)
+    user_uuid = Column(UUIDType(binary=False), ForeignKey('content.users.uuid'), nullable=False, unique=False)
+
+    user = relationship('Users', back_populates='audiofile', foreign_keys=user_uuid)
 
 

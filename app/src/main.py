@@ -3,15 +3,11 @@ import logging
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from redis import asyncio as aioredis
 
-from api.v1 import questions
+from api.v1 import questions, auth, files
 from core.config import SETTINGS
 from core.logger import LOGGING
-from db import redis_inj
 
-redis_inj.redis_pool = aioredis.ConnectionPool(
-    host=SETTINGS.REDIS.REDIS_HOST, port=SETTINGS.REDIS.REDIS_PORT, db=0, max_connections=200)
 
 app = FastAPI(
     title=SETTINGS.PROJECT.PROJECT_NAME,
@@ -22,6 +18,8 @@ app = FastAPI(
 )
 
 app.include_router(questions.router, prefix='/api/v1/questions', tags=['questions'])
+app.include_router(auth.router, prefix='/api/v1/auth', tags=['auth'])
+app.include_router(files.router, prefix='/api/v1/files', tags=['files'])
 
 if __name__ == '__main__':
     uvicorn.run(
