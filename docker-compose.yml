@@ -11,7 +11,7 @@ services:
       - 5432
 
   app:
-    container_name: app
+    container_name: app-bewise
     build: ./app/
     volumes:
       - media_volume-bewise:/opt/app/src/media/
@@ -21,7 +21,7 @@ services:
       - db
 
   nginx:
-    container_name: nginx
+    container_name: nginx-bewise
     image: nginx:1.23.3
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro

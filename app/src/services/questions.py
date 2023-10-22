@@ -51,9 +51,7 @@ async def make_new(count: int, q_session: int, db: AsyncSession) -> list[dict]:
     if new_count:
         await make_new(count=new_count, q_session=q_session, db=db)
     else:
-        # если я правильно понял "должен быть предыдущей сохранённый вопрос для викторины.
-        # В случае его отсутствия - пустой объект." - то здесь выбираются вопросы, которые были сохранены при
-        # предыдущем обращении к нашему API (по полю query_session)
+
         prev_query_session = await db.execute(
             select(Questions).where(Questions.query_session == q_session - 1))
         await db.commit()
